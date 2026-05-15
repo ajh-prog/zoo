@@ -7,64 +7,99 @@
 :root {
   --gold: #ffd700;
   --gold-dark: #8b6914;
-  --table-green: #0a3d0a;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   font-family: var(--font-cinzel), Georgia, serif;
-  background: radial-gradient(ellipse at 50% 30%, #0f5a0f 0%, #071f07 60%, #030d03 100%);
   min-height: 100vh;
   color: var(--gold);
 }
 
-/* Casino table felt texture */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.015) 0px,
-      rgba(255, 255, 255, 0.015) 1px,
-      transparent 1px,
-      transparent 8px
-    );
-  pointer-events: none;
-  z-index: 0;
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+
+/* ── Keyframes ───────────────────────────── */
+
+@keyframes shimmer {
+  0%   { background-position: -300% center; }
+  100% { background-position:  300% center; }
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--gold-dark);
-  border-radius: 3px;
+@keyframes spin-glow {
+  0%, 100% { box-shadow: 0 0 24px rgba(255,215,0,0.35), 0 0 48px rgba(255,165,0,0.1); }
+  50%       { box-shadow: 0 0 60px rgba(255,215,0,0.85), 0 0 100px rgba(255,165,0,0.4); }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
-  50%       { box-shadow: 0 0 40px rgba(255, 215, 0, 0.7); }
+@keyframes spin-glow-active {
+  0%, 100% { filter: drop-shadow(0 0 16px rgba(255,215,0,0.5)); }
+  50%       { filter: drop-shadow(0 0 50px rgba(255,215,0,1)) drop-shadow(0 0 80px rgba(255,165,0,0.6)); }
 }
 
 @keyframes result-in {
-  from { opacity: 0; transform: translateY(-20px) scale(0.8); }
-  to   { opacity: 1; transform: translateY(0)     scale(1);   }
+  0%   { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+  60%  { transform: scale(1.1) rotate(3deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-.result-badge {
-  animation: result-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+@keyframes ball-pop {
+  0%   { opacity: 0; transform: scale(0) rotate(-180deg); }
+  55%  { transform: scale(1.25) rotate(12deg); }
+  75%  { transform: scale(0.95) rotate(-4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-.spin-button {
-  animation: pulse-glow 2s ease-in-out infinite;
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50%       { opacity: 1; transform: scale(1)   rotate(180deg); }
 }
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg) scaleX(1); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(800deg) scaleX(-1); opacity: 0; }
+}
+
+@keyframes bg-breathe {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; }
+}
+
+@keyframes celebrate-pulse {
+  0%, 100% { transform: scale(1); }
+  30%       { transform: scale(1.04); }
+  60%       { transform: scale(0.97); }
+}
+
+/* ── Utility classes ──────────────────────── */
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #b8860b 0%,
+    #ffd700 20%,
+    #fffacd 40%,
+    #ffa500 55%,
+    #fffacd 70%,
+    #ffd700 80%,
+    #b8860b 100%
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+.result-badge    { animation: result-in   0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.ball-pop        { animation: ball-pop    0.6s  cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.float-anim      { animation: float-y     3s    ease-in-out infinite; }
+.spin-btn-idle   { animation: spin-glow   2.2s  ease-in-out infinite; }
+.wheel-spinning  { animation: spin-glow-active 1s ease-in-out infinite; }
+.celebrate       { animation: celebrate-pulse 0.6s ease-in-out 6; }
