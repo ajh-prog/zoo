@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-cinzel: var(--font-cinzel);
+}
+
+:root {
+  --gold: #ffd700;
+  --gold-dark: #8b6914;
+  --table-green: #0a3d0a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-cinzel), Georgia, serif;
+  background: radial-gradient(ellipse at 50% 30%, #0f5a0f 0%, #071f07 60%, #030d03 100%);
+  min-height: 100vh;
+  color: var(--gold);
+}
+
+/* Casino table felt texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+  50%       { box-shadow: 0 0 40px rgba(255, 215, 0, 0.7); }
+}
+
+@keyframes result-in {
+  from { opacity: 0; transform: translateY(-20px) scale(0.8); }
+  to   { opacity: 1; transform: translateY(0)     scale(1);   }
+}
+
+.result-badge {
+  animation: result-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.spin-button {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
